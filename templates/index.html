@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <script src="{% static 'index.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>SUPPLY</title>
+
+</head>
+<body style="margin: 0; border: 0;font-family: 'Poppins', sans-serif;">
+
+    <div id="popup1" class="overlay overlay1">
+        <div class="popup popup1">
+            <h2>My Cart</h2>
+            <a class="close" onclick="cross()">×</a>
+            <div class="content content1">
+                <div class="empty_cart" id="empty_cart">
+                </div>
+                <div class="empty_cart_text" id="empty_cart_text">
+                    You don't have anything in your cart yet
+                </div>
+                <div class="cart_items" id="cart_items">
+                    <table cellspacing="0" class="table_cart_items">
+                        <tr style="display: none;">
+                            <th>name</th>
+                            <th>price</th>
+                            <th>qty</th>
+                        </tr>
+                    </table>
+                </div>
+
+                <form class="total" id="total" method="GET">
+                    <div class="Total">
+                        <div class="total_total" id="total_total">
+                            Total
+                        </div>
+                        
+                        <div class="total_value" id="total_value">
+                            
+                        </div>
+
+                    </div>
+                    <div class="razorpay" id="razorpay">
+                        <button id="rzp-button1" class="razorpay-payment-button">Pay</button>
+                        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                        <script>
+                            $(".razorpay-payment-button").click(function(){
+                                var total_price = document.getElementById("total_value").innerHTML;
+                                total_pri = total_price.replace('₹', '');
+                    
+                                var options = {
+                                    "key": "rzp_test_HYBTM3PFjHx7Dg",
+                                    "amount": total_pri + "00",
+                                    "currency": "INR",
+                                    "name": "Supplies",
+                                    "description": "Test Transaction",
+                                    "image": "https://example.com/your_logo",
+                                    "order_id": "{{payment.id}}",
+                                    "handler": function (response){
+                                        alert(response.razorpay_payment_id);
+                                        alert(response.razorpay_order_id);
+                                        alert(response.razorpay_signature)
+                                    },
+                                    "prefill": {
+                                        "name": "Gaurav Kumar",
+                                        "email": "gaurav.kumar@example.com",
+                                        "contact": "8318978021"
+                                    },
+                                    "notes": {
+                                        "address": "Corporate Office"
+                                    },
+                                    "theme": {
+                                        "color": "#3399cc"
+                                    }
+                                };
+                                var rzp1 = new Razorpay(options);
+                                rzp1.on('payment.failed', function (response){
+                                        alert(response.error.code);
+                                        alert(response.error.description);
+                                        alert(response.error.source);
+                                        alert(response.error.step);
+                                        alert(response.error.reason);
+                                        alert(response.error.metadata.order_id);
+                                        alert(response.error.metadata.payment_id);
+                                });
+
+                                
+
+                                
+                                rzp1.open();
+                            });
+
+                            
+                        </script>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <div class="top">
+        <div class="top_text">
+            SUPPLIES
+        </div>
+        <div class="options">
+            <div class="cart">
+                <div class="total_items" onclick="overlay1()">
+                    <div class="cart_logo">
+
+                    </div>
+                    <div class="details">
+                        My Cart
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards_top">High on demand</div>
+    
+    <div class="cards cards_one">
+      <div class="card">
+        <div class="img maggi">
+        
+        </div>
+        <h1>Maggi</h1>
+        <div class="product_price">
+            ₹14
+        </div>
+        <button class="add_item add_item2" id="add_item2" onclick="add(this.value)" value="2">Add item</button>
+        <div class="counterr counterr2" id="counterr2">
+            <button class="counter add add2" id="add2" onclick="add_item(this.value)" value="2">+</button>
+            <div class="counter_input counter_input2" id="counter_input2" disabled></div>
+            <button class="counter sub sub2" id="sub2" onclick="sub_item(this.value)" value="2">-</button>
+        </div>
+      </div>
+      
+      <div class="card">
+            <div class="img lays_magic">
+          
+            </div>
+            <h1>Lay's Magic Masala</h1>
+            <div class="product_price">
+                ₹10
+            </div>
+            <button class="add_item add_item3" id="add_item3" onclick="add(this.value)" value="3">Add item</button>
+            <div class="counterr counterr3" id="counterr3">
+                <button class="counter add add3" id="add3" onclick="add_item(this.value)" value="3">+</button>
+                <div class="counter_input counter_input3" id="counter_input3" disabled></div>
+                <button class="counter sub sub3" id="sub3" onclick="sub_item(this.value)" value="3">-</button>
+            </div>
+      </div>
+      <div class="card">
+            <div class="img lays_orange">
+         
+        </div>
+        <h1>Lay's West Indies</h1>
+        <div class="product_price">
+            ₹10
+        </div>
+        <button class="add_item add_item4" id="add_item4" onclick="add(this.value)" value="4">Add item</button>
+        <div class="counterr counterr4" id="counterr4">
+            <button class="counter add add4" id="add4" onclick="add_item(this.value)" value="4">+</button>
+            <div class="counter_input counter_input4" id="counter_input4" disabled></div>
+            <button class="counter sub" id="sub4" onclick="sub_item(this.value)" value="4">-</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards_mid">Other products</div>
+    
+    <div class="cards cards_two">
+
+        <div class="card">
+            <div class="img hide_and_seek">
+            </div>
+            <h1>Hide & seek</h1>
+            <div class="product_price">
+                ₹20
+            </div>
+            <button class="add_item add_item1" onclick="add(this.value)" value="1">Add item</button>
+            <div class="counterr counterr1">
+                <button class="counter add add1"onclick="add_item(this.value)" value="1">+</button>
+                <div class="counter_input counter_input1"></div>
+                <button class="counter sub sub1" id="sub1" onclick="sub_item(this.value)" value="1">-</button>
+            </div>
+        </div>
+
+      <div class="card">
+        <div class="img maggi">
+         
+        </div>
+        <h1>Maggi</h1>
+        <div class="product_price">
+            ₹14
+        </div>
+        <button class="add_item add_item2" id="add_item2" onclick="add(this.value)" value="2">Add item</button>
+        <div class="counterr counterr2" id="counterr2">
+            <button class="counter add add2" id="add2" onclick="add_item(this.value)" value="2">+</button>
+            <div class="counter_input counter_input2" id="counter_input2" disabled></div>
+            <button class="counter sub sub2" id="sub2" onclick="sub_item(this.value)" value="2">-</button>
+        </div>
+      </div>
+      
+      <div class="card">
+            <div class="img lays_magic">
+          
+        </div>
+        <h1>Lay's Magic Masala</h1>
+        <div class="product_price">
+            ₹10
+        </div>
+        <button class="add_item add_item3" id="add_item3" onclick="add(this.value)" value="3">Add item</button>
+        <div class="counterr counterr3" id="counterr3">
+            <button class="counter add add3" id="add3" onclick="add_item(this.value)" value="3">+</button>
+            <div class="counter_input counter_input3" id="counter_input3"></div>
+            <button class="counter sub sub3" id="sub3" onclick="sub_item(this.value)" value="3">-</button>
+        </div>
+      </div>
+      <div class="card">
+            <div class="img lays_orange">
+          
+        </div>
+        <h1>Lay's West Indies</h1>
+        <div class="product_price">
+            ₹10
+        </div>
+        <button class="add_item add_item4" id="add_item4" onclick="add(this.value)" value="4">Add item</button>
+        <div class="counterr counterr4" id="counterr4">
+            <button class="counter add add4" id="add4" onclick="add_item(this.value)" value="4">+</button>
+            <div class="counter_input counter_input4" id="counter_input4" disabled></div>
+            <button class="counter sub sub4" id="sub4" onclick="sub_item(this.value)" value="4">-</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="footer_left">
+            SUPPLIES
+            <div class="footer_left_small">SATISFY YOUR HUNGER</div>
+        </div>
+
+        <div class="footer_right">
+            Reach out to us at:
+            <div class="contacts">
+                <div class="phone contact"></div>
+                <div class="email contact"></div>
+            </div>
+
+            <div class="footer_right_bottom">Feel free to reach out to us anytime !</div>
+        </div>
+    </div>
+
+    <script>
+
+        const stock_ = [0 , 0 , 1000, 1000, 1000];
+
+        for (let i = 1; i < price.length; i++) {
+            const add_item = document.querySelectorAll(".add_item"+i);
+            
+            if (stock_[i] <= 0) {
+                for (let j = 0; j < add_item.length; j++) {
+                    add_item[j].innerHTML = "Out of Stock";
+                    add_item[j].disabled = "true";
+                    add_item[j].style.background = "transparent";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
